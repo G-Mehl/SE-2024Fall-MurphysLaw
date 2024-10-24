@@ -1,0 +1,249 @@
+/* Global Styles */
+* {
+    -fx-box-sizing: border-box; /* Not needed in JavaFX, but keeping for clarity */
+}
+
+/* Container */
+.container {
+    -fx-background-color: #F5F5DC; /* Background color */
+    -fx-border-color: #000000; /* Border color */
+    -fx-border-width: 1; /* Border width */
+    -fx-pref-width: 500; /* Preferred width */
+    -fx-pref-height: 500; /* Preferred height */
+}
+
+/* Header */
+.header {
+    -fx-pref-width: 500px; /* Preferred width */
+    -fx-pref-height: 50px; /* Preferred height */
+    -fx-fill: #172D13; /* Background color */
+}
+
+/* Logo */
+.logo {
+    -fx-pref-width: 149; /* Preferred width */
+    -fx-pref-height: 145; /* Preferred height */
+    -fx-background-image: url(Logo); /* Use this format for background images */
+    -fx-background-size: cover; /* Cover to maintain aspect ratio */
+}
+
+/* Navigation Items */
+.nav-item {
+    -fx-pref-height: 39; /* Preferred height */
+    -fx-font-family: 'Inter'; /* Font family */
+    -fx-font-weight: 400; /* Font weight */
+    -fx-font-size: 20px; /* Font size */
+    -fx-text-fill: #C49A6A; /* Text color */
+}
+
+.nav-home {
+    -fx-pref-width: 90; /* Preferred width */
+    -fx-layoutX: 29; /* X position */
+    -fx-layoutY: 35; /* Y position */
+}
+
+.nav-about {
+    -fx-pref-width: 91; /* Preferred width */
+    -fx-layoutX: 174; /* X position */
+    -fx-layoutY: 35; /* Y position */
+}
+
+.nav-profile {
+    -fx-pref-width: 97; /* Preferred width */
+    -fx-layoutX: 1282; /* X position */
+    -fx-layoutY: 35; /* Y position */
+}
+
+/* Event Results Section */
+.results {
+    -fx-pref-width: 110; /* Preferred width */
+    -fx-pref-height: 39; /* Preferred height */
+    -fx-layoutX: 39; /* X position */
+    -fx-layoutY: 423; /* Y position */
+    -fx-font-family: 'Inter'; /* Font family */
+    -fx-font-size: 32px; /* Font size */
+    -fx-text-fill: #C49A6A; /* Text color */
+}
+
+/* Event Descriptions */
+.event-title {
+    -fx-pref-width: 670; /* Preferred width */
+    -fx-pref-height: 39; /* Preferred height */
+    -fx-layoutX: 94; /* X position */
+    -fx-layoutY: 500; /* Y position */
+    -fx-font-family: 'Inter'; /* Font family */
+    -fx-font-size: 32px; /* Font size */
+    -fx-text-fill: #C49A6A; /* Text color */
+}
+
+.event-organization {
+    -fx-pref-width: 233; /* Preferred width */
+    -fx-pref-height: 29; /* Preferred height */
+    -fx-layoutX: 95; /* X position */
+    -fx-layoutY: 549; /* Y position */
+    -fx-font-family: 'Inter'; /* Font family */
+    -fx-font-size: 24px; /* Font size */
+    -fx-text-fill: #C49A6A; /* Text color */
+}
+
+.event-date-time {
+    -fx-pref-width: 216; /* Preferred width */
+    -fx-pref-height: 24; /* Preferred height */
+    -fx-layoutX: 95; /* X position */
+    -fx-layoutY: 586; /* Y position */
+    -fx-font-family: 'Inter'; /* Font family */
+    -fx-font-size: 20px; /* Font size */
+    -fx-text-fill: #C49A6A; /* Text color */
+}
+
+.event-description {
+    -fx-pref-width: 689; /* Preferred width */
+    -fx-pref-height: 57; /* Preferred height */
+    -fx-layoutX: 96; /* X position */
+    -fx-layoutY: 620; /* Y position */
+    -fx-font-family: 'Inter'; /* Font family */
+    -fx-font-size: 16px; /* Font size */
+    -fx-text-fill: #C49A6A; /* Text color */
+}
+
+.event-location {
+    -fx-pref-width: 165; /* Preferred width */
+    -fx-pref-height: 24; /* Preferred height */
+    -fx-layoutX: 379; /* X position */
+    -fx-layoutY: 586; /* Y position */
+    -fx-font-family: 'Inter'; /* Font family */
+    -fx-font-size: 20px; /* Font size */
+    -fx-text-fill: #C49A6A; /* Text color */
+}
+
+/* Numeric Indicators */
+.number-indicator {
+    -fx-pref-height: 44; /* Preferred height */
+    -fx-font-family: 'Inter'; /* Font family */
+    -fx-font-size: 36px; /* Font size */
+    -fx-text-fill: #C49A6A; /* Text color */
+}
+
+.number-1 {
+    -fx-pref-width: 17; /* Preferred width */
+    -fx-layoutX: 45; /* X position */
+    -fx-layoutY: 500; /* Y position */
+}
+
+.number-2 {
+    -fx-pref-width: 22; /* Preferred width */
+    -fx-layoutX: 45; /* X position */
+    -fx-layoutY: 699; /* Y position */
+}
+
+/* Call-to-Action Buttons */
+.cta-button {
+    -fx-pref-width: 143; /* Preferred width */
+    -fx-pref-height: 71; /* Preferred height */
+    -fx-background-color: #D76F30; /* Background color */
+    -fx-background-radius: 50px; /* Rounded corners */
+}
+
+.login-button {
+    -fx-layoutX: 1144; /* X position */
+    -fx-layoutY: 39; /* Y position */
+}
+
+.signup-button {
+    -fx-layoutX: 1294; /* X position */
+    -fx-layoutY: 39; /* Y position */
+}
+
+/* Additional Rectangles */
+.rectangle {
+    -fx-background-color: #C49A6A; /* Background color */
+    -fx-background-radius: 90px; /* Rounded corners */
+}
+
+.rectangle-1 {
+    -fx-pref-width: 1440; /* Preferred width */
+    -fx-pref-height: 33; /* Preferred height */
+    -fx-layoutX: 0; /* X position */
+    -fx-layoutY: 116; /* Y position */
+}
+
+.rectangle-2 {
+    -fx-pref-width: 1345; /* Preferred width */
+    -fx-pref-height: 174; /* Preferred height */
+    -fx-layoutX: 34; /* X position */
+    -fx-layoutY: 179; /* Y position */
+}
+
+.rectangle-3 {
+    -fx-pref-width: 668; /* Preferred width */
+    -fx-pref-height: 3; /* Preferred height */
+    -fx-layoutX: 95; /* X position */
+    -fx-layoutY: 737; /* Y position */
+}
+
+/* Location and Interests Sections */
+.location {
+    -fx-pref-width: 108; /* Preferred width */
+    -fx-pref-height: 29; /* Preferred height */
+    -fx-layoutX: 137; /* X position */
+    -fx-layoutY: 209; /* Y position */
+    -fx-font-family: 'Inter'; /* Font family */
+    -fx-font-size: 24px; /* Font size */
+    -fx-text-fill: #C49A6A; /* Text color */
+}
+
+.interests {
+    -fx-pref-width: 188; /* Preferred width */
+    -fx-pref-height: 29; /* Preferred height */
+    -fx-layoutX: 454; /* X position */
+    -fx-layoutY: 263; /* Y position */
+    -fx-font-family: 'Inter'; /* Font family */
+    -fx-font-size: 24px; /* Font size */
+    -fx-text-fill: #F5F5DC; /* Text color */
+}
+
+/* Trailing Elements */
+.trailing-icons {
+    -fx-flex-direction: row; /* Not applicable in JavaFX */
+    -fx-justify-content: flex-end; /* Not applicable in JavaFX */
+    -fx-align-items: center; /* Not applicable in JavaFX */
+    -fx-pref-width: 48; /* Preferred width */
+    -fx-pref-height: 48; /* Preferred height */
+    -fx-layoutX: 1301; /* X position */
+    -fx-layoutY: 253; /* Y position */
+}
+
+/* Icon Buttons */
+.icon-button {
+    -fx-pref-width: 48; /* Preferred width */
+    -fx-pref-height: 48; /* Preferred height */
+    -fx-background-color: #49454F; /* Background color */
+}
+
+.icon {
+    -fx-pref-width: 24; /* Preferred width */
+    -fx-pref-height: 24; /* Preferred height */
+}
+
+/* Additional Rectangles for Layout */
+.rectangle-4 {
+    -fx-pref-width: 377; /* Preferred width */
+    -fx-pref-height: 420; /* Preferred height */
+    -fx-layoutX: 948; /* X position */
+    -fx-layoutY: 452; /* Y position */
+    -fx-background-color: #172D13; /* Background color */
+}
+
+.rectangle-5 {
+    -fx-pref-width: 668; /* Preferred width */
+    -fx-pref-height: 3; /* Preferred height */
+    -fx-layoutX: 95; /* X position */
+    -fx-layoutY: 538; /* Y position */
+}
+
+/* Arrow Icons */
+.arrow-icon {
+    -fx-pref-width: 47; /* Preferred width */
+    -fx-pref-height: 40; /* Preferred height */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 4, 0, 0, 0); /* Drop shadow effect */
+}
