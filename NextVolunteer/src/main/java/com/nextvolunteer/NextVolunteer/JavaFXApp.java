@@ -3,8 +3,10 @@ package com.nextvolunteer.NextVolunteer;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.Button; // Imports all classes in javafx.stage
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label; // Imports all classes in javafx.scene
+import javafx.scene.control.TextField; // Imports all controls like Button, TextField, Label, etc.
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -75,7 +77,7 @@ public class JavaFXApp extends Application {
         root.getChildren().add(signUpButton);
 
     //Middle content
-        // Create subheader rectangle
+        // Create subheader rectangle above filter box
         Rectangle subHeader = new Rectangle(screenWidth * 0.8, 15);
         subHeader.setFill(Color.valueOf("#C49A6A"));
         subHeader.setLayoutX(0);  // Align header at top-left
@@ -91,7 +93,39 @@ public class JavaFXApp extends Application {
         filtersBox.setLayoutY(85);
         root.getChildren().add(filtersBox);
 
-        // Create subheader rectangle
+        TextField inputLocation = new TextField();
+        inputLocation.setPromptText("Enter a City");
+        inputLocation.setLayoutX(95);
+        inputLocation.setLayoutY(105);
+        inputLocation.getStyleClass().add("rectangle-5");
+        root.getChildren().add(inputLocation);
+
+        // Create a ComboBox for the dropdown list
+        ComboBox<String> dropdownInterests = new ComboBox<>();
+        dropdownInterests.getItems().addAll("Option 1", "Option 2", "Option 3");
+        dropdownInterests.setPromptText("Areas of Interest");
+        dropdownInterests.setLayoutX(280);
+        dropdownInterests.setLayoutY(105);
+        dropdownInterests.getStyleClass().add("dropdown");
+        root.getChildren().add(dropdownInterests);
+
+        // Create a ComboBox for the dropdown list
+        ComboBox<String> dropdownDistance = new ComboBox<>();
+        dropdownDistance.getItems().addAll("10 mi", "25 mi", "50 mi");
+        dropdownDistance.setPromptText("Distance (mi)");
+        dropdownDistance.setLayoutX(520);
+        dropdownDistance.setLayoutY(105);
+        dropdownDistance.getStyleClass().add("dropdown");
+        root.getChildren().add(dropdownDistance);
+
+        TextField inputKeyword = new TextField();
+        inputKeyword.setPromptText("Search by Keyword");
+        inputKeyword.setLayoutX(750);
+        inputKeyword.setLayoutY(105);
+        inputKeyword.getStyleClass().add("rectangle-6");
+        root.getChildren().add(inputKeyword);
+
+        // Create line rectangle below filter boxes
         Rectangle subline = new Rectangle(screenWidth * 0.75, 3);
         subline.setFill(Color.valueOf("#C49A6A"));
         subline.setLayoutX(30);  // Align header at top-left
@@ -106,12 +140,19 @@ public class JavaFXApp extends Application {
         lblResults.setLayoutY(195);
         root.getChildren().add(lblResults);
 
-        // Create subheader rectangle
+        // Create ad rectangle
         Rectangle freeAd = new Rectangle(250, 275);
         freeAd.setFill(Color.valueOf("#172D13"));
         freeAd.setLayoutX(700);  // Align header at top-left
         freeAd.setLayoutY(200);
         root.getChildren().add(freeAd);
+
+        //Results text
+        Label lblad = new Label("This will be free \n" + "advertising for \n" + "non-profits");
+        lblad.getStyleClass().add("freeAd");
+        lblad.setLayoutX(775);
+        lblad.setLayoutY(175);
+        root.getChildren().add(lblad);
 
     //Bottom header and labels
         Rectangle headerBottom = new Rectangle(screenWidth * 0.8, 50);

@@ -201,6 +201,15 @@
     -fx-text-fill: #F5F5DC; /* Text color */
 }
 
+/* Location and Interests Sections */
+.freeAd {
+    -fx-pref-width: 300; /* Preferred width */
+    -fx-pref-height: 300; /* Preferred height */
+    -fx-font-family: 'Inter'; /* Font family */
+    -fx-font-size: 18px; /* Font size */
+    -fx-text-fill: #F5F5DC; /* Text color */
+}
+
 /* Trailing Elements */
 .trailing-icons {
     -fx-flex-direction: row; /* Not applicable in JavaFX */
@@ -232,10 +241,47 @@
 }
 
 .rectangle-5 {
-    -fx-pref-width: 668; /* Preferred width */
-    -fx-pref-height: 3; /* Preferred height */
-    -fx-layoutX: 95; /* X position */
-    -fx-layoutY: 538; /* Y position */
+    -fx-font-size: 12px;
+    -fx-padding: 3px 5px; 
+    -fx-background-color: #6BB77B;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-pref-width: 120px;
+    -fx-pref-height: 33px;
+    -fx-prompt-text-fill: #FFFFFF;
+    -fx-text-fill: #FFFFFF;
+}
+.rectangle-6 {
+    -fx-font-size: 12px;
+    -fx-padding: 3px 5px; 
+    -fx-background-color: #6BB77B;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-pref-width: 175px;
+    -fx-pref-height: 33px;
+    -fx-prompt-text-fill: #FFFFFF;
+    -fx-text-fill: #FFFFFF;
+}
+
+.dropdown {
+    -fx-font-size: 12px;
+    -fx-padding: 3px 5px; 
+    -fx-background-color: #6BB77B;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-pref-width: 175px;
+    -fx-pref-height: 10px;
+    -fx-prompt-text-fill: #FFFFFF;
+}
+
+/* Additional styling to control the dropdown list popup */
+.dropdown .list-cell {
+    -fx-background-color: #6BB77B;
+    -fx-text-fill: #FFFFFF; /* Text color for dropdown items */
+}
+
+.dropdown .popup-content {
+    -fx-background-color: #6BB77B;
 }
 
 /* Arrow Icons */
