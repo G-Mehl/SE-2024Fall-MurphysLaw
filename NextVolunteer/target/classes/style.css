@@ -58,8 +58,6 @@
 .results {
     -fx-pref-width: 110; /* Preferred width */
     -fx-pref-height: 39; /* Preferred height */
-    -fx-layoutX: 39; /* X position */
-    -fx-layoutY: 423; /* Y position */
     -fx-font-family: 'Inter'; /* Font family */
     -fx-font-size: 32px; /* Font size */
     -fx-text-fill: #C49A6A; /* Text color */
@@ -138,10 +136,11 @@
 
 /* Call-to-Action Buttons */
 .cta-button {
-    -fx-pref-width: 143; /* Preferred width */
-    -fx-pref-height: 71; /* Preferred height */
+    -fx-pref-width: 70; /* Preferred width */
+    -fx-pref-height: 35; /* Preferred height */
     -fx-background-color: #D76F30; /* Background color */
     -fx-background-radius: 50px; /* Rounded corners */
+    -fx-font-size: 14px;
 }
 
 .login-button {
@@ -229,9 +228,7 @@
 .rectangle-4 {
     -fx-pref-width: 377; /* Preferred width */
     -fx-pref-height: 420; /* Preferred height */
-    -fx-layoutX: 948; /* X position */
-    -fx-layoutY: 452; /* Y position */
-    -fx-background-color: #172D13; /* Background color */
+    -fx-background-radius: 50px;
 }
 
 .rectangle-5 {
