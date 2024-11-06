@@ -153,6 +153,14 @@
     -fx-layoutY: 39; /* Y position */
 }
 
+.submit-button {
+    -fx-pref-width: 225; /* Preferred width */
+    -fx-pref-height: 33; /* Preferred height */
+    -fx-background-color: #D76F30; /* Background color */
+    -fx-background-radius: 5px; /* Rounded corners */
+    -fx-font-size: 18px;
+}
+
 /* Additional Rectangles */
 .rectangle {
     -fx-background-color: #C49A6A; /* Background color */
@@ -258,6 +266,18 @@
     -fx-border-radius: 5px;
     -fx-background-radius: 5px;
     -fx-pref-width: 175px;
+    -fx-pref-height: 33px;
+    -fx-prompt-text-fill: #FFFFFF;
+    -fx-text-fill: #FFFFFF;
+}
+
+.rectangle-7 {
+    -fx-font-size: 12px;
+    -fx-padding: 3px 5px; 
+    -fx-background-color: #6BB77B;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-pref-width: 225px;
     -fx-pref-height: 33px;
     -fx-prompt-text-fill: #FFFFFF;
     -fx-text-fill: #FFFFFF;

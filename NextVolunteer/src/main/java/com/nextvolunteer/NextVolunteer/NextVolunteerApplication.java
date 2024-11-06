@@ -11,5 +11,11 @@ public class NextVolunteerApplication {
 
         // Launch JavaFX Application
         JavaFXApp.launch(JavaFXApp.class, args);
+
+        // Launch sign up
+        //JavaFXSignup.launch(JavaFXSignup.class, args);
+
+        // Launch login
+        //JavaFXLogin.launch(JavaFXLogin.class, args);
     }
 }
