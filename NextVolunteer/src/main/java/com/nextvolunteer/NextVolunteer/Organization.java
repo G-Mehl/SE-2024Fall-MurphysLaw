@@ -1,12 +1,19 @@
 package com.nextvolunteer.NextVolunteer;
 
-import java.util.List;
+import java.util.*;
+import java.sql.*;
 
 public class Organization {
     // Variables
     private int organizationID;
     private String name;
     private String contactInfo;
+
+
+    // Database connection variables
+    private static final String URL = "jdbc:mysql://localhost:3306/SE_Project";
+    private static final String DB_USERNAME = "root";
+    private static final String DB_PASSWORD = "";
 
     //Constructor
     public Organization(int organizationID, String name, String contactInfo) {
@@ -42,20 +49,67 @@ public class Organization {
 
     // Methods
     public void addOpp(Opportunity opportunity) {
-        // Logic to be added
+        try (Connection conn = DriverManager.getConnection(URL, DB_USERNAME, DB_PASSWORD)) {
+            String sql = "INSERT INTO Opportunities (title, descr, location, duration, associated_interests, organization_id) VALUES (?, ?, ?, ?, ?, ?)";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, opportunity.getTitle());
+            stmt.setString(2, opportunity.getDescription());
+            stmt.setString(3, opportunity.getLocation());
+            stmt.setString(4, opportunity.getDuration());
+            stmt.setString(5, opportunity.getInterestArea());
+            stmt.setInt(6, opportunity.getOrganizationID());
+
+            stmt.executeUpdate(); 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void updateOrgDetails(String newName, String newContactInfo) {
         this.name = newName;
         this.contactInfo = newContactInfo;
-        // Logic to be added
 
+        try (Connection conn = DriverManager.getConnection(URL, DB_USERNAME, DB_PASSWORD)) {
+            String updateOrgSql = "UPDATE Oppurtunities SET name = ?, contactInfo = ? WHERE organization_id = ?";
+            PreparedStatement stmt = conn.prepareStatement(updateOrgSql);
+            stmt.setString(1, newName);
+            stmt.setString(2, newContactInfo);
+            stmt.setInt(3, getOrganizationID());
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public List<Opportunity> getOpportunities() {
-        // Logic to be added
+        List<Opportunity> opportunities = new ArrayList<>();
 
-        return null; // Replace with logic
+        try (Connection conn = DriverManager.getConnection(URL, DB_USERNAME, DB_PASSWORD)) {
+            String getOppsSql = "SELECT * FROM Opportunities WHERE organizationID = ?";
+            PreparedStatement stmt = conn.prepareStatement(getOppsSql);
+            stmt.setInt(1, getOrganizationID());
+
+            ResultSet rs = stmt.executeQuery();
+
+            // Process each row in the ResultSet
+            while (rs.next()) {
+                Opportunity opportunity = new Opportunity(
+                        rs.getInt("id"),
+                        rs.getString("title"),
+                        rs.getString("descr"),
+                        rs.getString("location"),
+                        rs.getString("associated_interests"),
+                        rs.getInt("organization_id")
+                );
+                opportunity.setDuration(rs.getString("duration")); //Retrieving duration from DB
+                opportunities.add(opportunity);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return opportunities;
     }
 }
 
