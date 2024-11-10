@@ -84,6 +84,12 @@ public class JavaFXLogin extends Application {
         BtnSubmit.getStyleClass().add("submit-button");
         root.getChildren().add(BtnSubmit);
 
+        Button btnBack = new Button("<-");
+        btnBack.setLayoutX(20);
+        btnBack.setLayoutY(20);
+        btnBack.getStyleClass().add("back-button");
+        root.getChildren().add(btnBack);
+
         // Set Scene to screen size
         Scene scene = new Scene(root, screenWidthfixed, screenHeightfixed);
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm()); // Load CSS
@@ -93,5 +99,33 @@ public class JavaFXLogin extends Application {
         primaryStage.setScene(scene);
         primaryStage.setResizable(true);  // Allow resizing
         primaryStage.show();
+
+        btnBack.setOnAction(event -> openBasePage(primaryStage));
+        BtnSubmit.setOnAction(event -> openBasePage(primaryStage));
+    }
+
+    //methods to swap pages
+    private void openBasePage(Stage primaryStage) {
+        JavaFXApp basePage = new JavaFXApp();
+        try {
+            basePage.start(primaryStage);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void submitClicked(Stage primaryStage) {
+        //instantiate User object to be used for register() method
+        JavaFXApp basePage = new JavaFXApp();
+        try {
+            //will add the register() method so it binds
+
+            // then return to base page. 
+            basePage.start(primaryStage);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

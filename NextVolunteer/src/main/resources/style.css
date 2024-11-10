@@ -161,6 +161,15 @@
     -fx-font-size: 18px;
 }
 
+.back-button {
+    -fx-pref-width: 50; /* Preferred width */
+    -fx-pref-height: 50; /* Preferred height */
+    -fx-background-color: #D76F30; /* Background color */
+    -fx-background-radius: 30px; /* Rounded corners */
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
 /* Additional Rectangles */
 .rectangle {
     -fx-background-color: #C49A6A; /* Background color */

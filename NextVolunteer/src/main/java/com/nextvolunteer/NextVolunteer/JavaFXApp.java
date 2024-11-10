@@ -42,7 +42,7 @@ public class JavaFXApp extends Application {
         logoView.setFitWidth(60);  // Set image width
         logoView.setFitHeight(60);  // Set image height
         logoView.setLayoutX(5);  // Set image position
-        logoView.setLayoutY(0);  // Position inside the header
+        logoView.setLayoutY(-5);  // Position inside the header
         root.getChildren().add(logoView);
 
         // Labels for now till files are made for redirects
@@ -102,7 +102,7 @@ public class JavaFXApp extends Application {
 
         // Create a ComboBox for the dropdown list
         ComboBox<String> dropdownInterests = new ComboBox<>();
-        dropdownInterests.getItems().addAll("Option 1", "Option 2", "Option 3");
+        dropdownInterests.getItems().addAll("Education & Literacy", "Environment & Conservation", "Animal Welfare", "Healthcare & Wellness", "Disaster Relief");
         dropdownInterests.setPromptText("Areas of Interest");
         dropdownInterests.setLayoutX(280);
         dropdownInterests.setLayoutY(105);
@@ -198,5 +198,30 @@ public class JavaFXApp extends Application {
         primaryStage.setScene(scene);
         primaryStage.setResizable(true);  // Allow resizing
         primaryStage.show();
+
+        //Button actions
+        loginButton.setOnAction(event -> openLoginPage(primaryStage));
+        signUpButton.setOnAction(event -> openSignUpPage(primaryStage));
+    }
+
+    //methods to swap pages
+    private void openLoginPage(Stage primaryStage) {
+        JavaFXLogin loginPage = new JavaFXLogin();
+        try {
+            loginPage.start(primaryStage);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void openSignUpPage(Stage primaryStage) {
+        JavaFXSignup signupPage = new JavaFXSignup();
+        try {
+            signupPage.start(primaryStage);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -10,7 +10,7 @@ public class NextVolunteerApplication {
         SpringApplication.run(NextVolunteerApplication.class, args);
 
         // Launch JavaFX Application
-        JavaFXApp.launch(JavaFXApp.class, args);
+       JavaFXApp.launch(JavaFXApp.class, args);
 
         // Launch sign up
         //JavaFXSignup.launch(JavaFXSignup.class, args);
