@@ -6,11 +6,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane; // Imports all classes in javafx.stage
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle; // Imports all classes in javafx.scene
-import javafx.stage.Screen; // Imports all controls like Button, TextField, Label, etc.
-import javafx.stage.Stage;
+import javafx.scene.shape.Rectangle; // Imports all classes in javafx.stage
+import javafx.stage.Screen;
+import javafx.stage.Stage; // Imports all classes in javafx.scene
 
 public class JavaFXSignup extends Application {
     @Override
@@ -55,6 +55,13 @@ public class JavaFXSignup extends Application {
         lblemail.setLayoutY(100);
         root.getChildren().add(lblemail);
 
+        //for validation
+        Label lblemailErr = new Label();
+        lblemailErr.setTextFill(Color.RED);
+        lblemailErr.setLayoutX(455);
+        lblemailErr.setLayoutY(100);
+        root.getChildren().add(lblemailErr);
+
         //input email
         TextField inputEmail = new TextField();
         inputEmail.setPromptText("person@gmail.com");
@@ -85,21 +92,29 @@ public class JavaFXSignup extends Application {
         
         //password input
         TextField inputPassword = new TextField();
-        inputPassword.setPromptText("pasword!");
+        inputPassword.setPromptText("password!");
         inputPassword.setLayoutX(395);
         inputPassword.setLayoutY(300);
         inputPassword.getStyleClass().add("rectangle-7");
         root.getChildren().add(inputPassword);
 
-        Label lblpasswordConfrim = new Label("Confrim Password");
-        lblpasswordConfrim.getStyleClass().add("nav-item");
-        lblpasswordConfrim.setLayoutX(425);
-        lblpasswordConfrim.setLayoutY(340);
-        root.getChildren().add(lblpasswordConfrim);
+        Label lblpasswordConfirm = new Label("Confirm Password");
+        lblpasswordConfirm.getStyleClass().add("nav-item");
+        lblpasswordConfirm.setLayoutX(425);
+        lblpasswordConfirm.setLayoutY(340);
+        root.getChildren().add(lblpasswordConfirm);
+
+        //for validation password
+        Label lblpassErr = new Label();
+        lblpassErr.setTextFill(Color.RED);
+        lblpassErr.setLayoutX(440);
+        lblpassErr.setLayoutY(340);
+        root.getChildren().add(lblpassErr);
+
 
         //password input
         TextField inputPasswordConfirm = new TextField();
-        inputPasswordConfirm.setPromptText("pasword!");
+        inputPasswordConfirm.setPromptText("password!");
         inputPasswordConfirm.setLayoutX(395);
         inputPasswordConfirm.setLayoutY(380);
         inputPasswordConfirm.getStyleClass().add("rectangle-7");
@@ -129,6 +144,26 @@ public class JavaFXSignup extends Application {
 
         btnBack.setOnAction(event -> openBasePage(primaryStage));
         BtnSubmit.setOnAction(event -> submitClicked(primaryStage));
+
+        //email validation
+        inputEmail.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.isEmpty()) {
+                lblemailErr.setText("");
+                lblemail.setText("Enter Email");
+            }
+            else if (!newValue.matches("^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$")) {
+                lblemail.setText("");
+                lblemailErr.setText("Invalid email format.");
+            }
+            else {
+                lblemailErr.setText("");
+                lblemail.setText("Enter Email");
+            }
+        });
+
+        inputPasswordConfirm.textProperty().addListener((observable, oldValue, newValue) -> {
+            validatePasswordMatch(inputPassword, inputPasswordConfirm, lblpassErr, lblpasswordConfirm);
+        });
     }
 
     //methods to swap pages
@@ -153,6 +188,25 @@ public class JavaFXSignup extends Application {
         }
         catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    //email validation method
+    private void validatePasswordMatch(TextField passwordField, TextField confirmPasswordField, Label lblpassErr, Label lblpasswordConfirm) {
+        String password = passwordField.getText();
+        String confirmPassword = confirmPasswordField.getText();
+
+        if (confirmPassword.isEmpty()) {
+            lblpassErr.setText("");
+            lblpasswordConfirm.setText("Confirm Password");
+        }
+        else if (!password.equals(confirmPassword)) {
+            lblpassErr.setText("Passwords do not match");
+            lblpasswordConfirm.setText("");
+        }
+        else {
+            lblpassErr.setText("");
+            lblpasswordConfirm.setText("Confirm Password");
         }
     }
 

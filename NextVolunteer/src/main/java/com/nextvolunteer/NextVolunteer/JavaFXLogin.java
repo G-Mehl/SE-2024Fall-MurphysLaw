@@ -72,7 +72,7 @@ public class JavaFXLogin extends Application {
 
         //input username
         TextField inputPassword = new TextField();
-        inputPassword.setPromptText("pasword!");
+        inputPassword.setPromptText("password!");
         inputPassword.setLayoutX(395);
         inputPassword.setLayoutY(325);
         inputPassword.getStyleClass().add("rectangle-7");
