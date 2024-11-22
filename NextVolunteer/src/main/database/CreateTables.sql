@@ -2,7 +2,7 @@ create database SE_Project;
 use SE_Project;
 
 create table Interests (
-	id integer primary key,
+    id integer primary key,
     interests varchar(64) unique not null
 );
 
@@ -37,6 +37,15 @@ create table Opportunities (
     foreign key (roleId) references Users (roleId)
 );
 
+CREATE TABLE Aggregated_Interests_Opportunities (
+    interest_id INTEGER,
+    interest_name VARCHAR(64),
+    opportunity_count INTEGER,
+    PRIMARY KEY (interest_id),
+    FOREIGN KEY (interest_id) REFERENCES Interests(id)
+);
+
+
 insert into Interests (id, interests) values 
 (0, 'Education & Literacy'),
 (1, 'Environment & Conservation'),
@@ -44,14 +53,36 @@ insert into Interests (id, interests) values
 (3, 'Healthcare & Wellness'),
 (4, 'Disaster Relief');
 
+INSERT INTO Aggregated_Interests_Opportunities (interest_id, interest_name, opportunity_count)
+SELECT 
+    i.id AS interest_id,
+    i.interests AS interest_name,
+    COUNT(o.id) AS opportunity_count
+FROM 
+    Interests i
+LEFT JOIN 
+    Opportunities o ON i.id = o.associated_interests
+GROUP BY 
+    i.id, i.interests;
+
+
 DELIMITER //
 
-create procedure GetTags(in InterestsTag varchar(64))
+CREATE PROCEDURE UpdateAggregatedInterestsOpportunities()
 BEGIN
-	select o.*
-    from Opportunities o
-    join Interests i on o.associated_interests = i.id
-    where i.interests = InterestsTag;
+    TRUNCATE TABLE Aggregated_Interests_Opportunities;
+
+    INSERT INTO Aggregated_Interests_Opportunities (interest_id, interest_name, opportunity_count)
+    SELECT 
+        i.id AS interest_id,
+        i.interests AS interest_name,
+        COUNT(o.id) AS opportunity_count
+    FROM 
+        Interests i
+    LEFT JOIN 
+        Opportunities o ON i.id = o.associated_interests
+    GROUP BY 
+        i.id, i.interests;
 END //
 
 DELIMITER ;
