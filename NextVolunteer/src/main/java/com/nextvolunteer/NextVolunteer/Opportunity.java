@@ -1,8 +1,12 @@
 package com.nextvolunteer.NextVolunteer;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.*;
 
 public class Opportunity {
     private int opportunityID;
@@ -12,20 +16,18 @@ public class Opportunity {
     private String duration;
     private String roleId;
     private String interestArea;
-    private int organizationID;
 
     // Database connection variables
     private static final String URL = "jdbc:mysql://localhost:3306/SE_Project";
     private static final String DB_USERNAME = "root";
     private static final String DB_PASSWORD = "";
 
-    public Opportunity(int opportunityID, String title, String description, String location, String interestArea, int organizationID) {
+    public Opportunity(int opportunityID, String title, String description, String location, String interestArea) {
         this.opportunityID = opportunityID;
         this.title = title;
         this.description = description;
         this.location = location;
         this.interestArea = interestArea;
-        this.organizationID = organizationID;
     }
 
     // Getters and Setters
@@ -43,16 +45,32 @@ public class Opportunity {
     public void setAssociatedInterests(String associatedInterests) { this.interestArea = associatedInterests; }
     public String getRoleId() { return roleId; }
     public void setRoleId(String roleId) { this.roleId = roleId; }
-    public int getOrganizationID() { return organizationID; }
-    public void setOrganizationID(int organizationID) { this.organizationID = organizationID; }
 
     // Methods
     public static List<Opportunity> getOppByInterest(String interestArea) {
         List<Opportunity> opportunities = new ArrayList<>();
+        int interestId = -1; // Initialize with an invalid ID
+
+        // First, find the ID for the given interest area
+        try (Connection conn = DriverManager.getConnection(URL, DB_USERNAME, DB_PASSWORD)) {
+            String interestSql = "SELECT id FROM Interests WHERE interests = ?";
+            PreparedStatement interestStmt = conn.prepareStatement(interestSql);
+            interestStmt.setString(1, interestArea);
+            ResultSet interestRs = interestStmt.executeQuery();
+
+            if (interestRs.next()) {
+                interestId = interestRs.getInt("id"); // Get the interest ID
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+    }
+
+    // Now, if we have a valid interest ID, query for opportunities
+    if (interestId != -1) {
         try (Connection conn = DriverManager.getConnection(URL, DB_USERNAME, DB_PASSWORD)) {
             String sql = "SELECT * FROM Opportunities WHERE associated_interests = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setString(1, interestArea);
+            stmt.setInt(1, interestId); // Use the interest ID
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -61,36 +79,42 @@ public class Opportunity {
                         rs.getString("title"),
                         rs.getString("descr"),
                         rs.getString("location"),
-                        rs.getString("associated_interests"),
-                        rs.getInt("organization_id")
+                        rs.getString("duration")
                 );
                 opportunities.add(opp);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return opportunities;
+    }
+
+    return opportunities;
     }
 
 
     public static List<Opportunity> getOppByLocation(String location) {
         List<Opportunity> opportunities = new ArrayList<>();
-        try (Connection conn = DriverManager.getConnection(URL, DB_USERNAME, DB_PASSWORD)) {
-            String sql = "SELECT * FROM Opportunities WHERE location = ?";
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setString(1, location);
-            ResultSet rs = stmt.executeQuery();
 
-            while (rs.next()) {
-                Opportunity opp = new Opportunity(
-                        rs.getInt("id"),
-                        rs.getString("title"),
-                        rs.getString("descr"),
-                        rs.getString("location"),
-                        rs.getString("associated_interests"),
-                        rs.getInt("organization_id")
-                );
-                opportunities.add(opp);
+        if (location == null || location.trim().isEmpty()) {
+            return opportunities; // Return empty list if location is invalid
+        }
+    
+        String sql = "SELECT * FROM Opportunities WHERE LOWER(location) = LOWER(?)";
+        try (Connection conn = DriverManager.getConnection(URL, DB_USERNAME, DB_PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setString(1, location.trim());
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Opportunity opp = new Opportunity(
+                            rs.getInt("id"),
+                            rs.getString("title"),
+                            rs.getString("descr"),
+                            rs.getString("location"),
+                            rs.getString("associated_interests")
+                    );
+                    opportunities.add(opp);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -112,8 +136,7 @@ public class Opportunity {
                         rs.getString("title"),
                         rs.getString("descr"),
                         rs.getString("location"),
-                        rs.getString("associated_interests"),
-                        organizationID
+                        rs.getString("associated_interests")
                 );
                 opportunities.add(opp);
             }
@@ -142,6 +165,11 @@ public class Opportunity {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public String toString() {
+        return title + " - " + location;
     }
 }
 

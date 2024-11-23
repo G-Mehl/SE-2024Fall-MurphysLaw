@@ -9,8 +9,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Screen; // Imports all classes in javafx.stage
+import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import javafx.animation.PauseTransition;
 
 public class JavaFXLogin extends Application {
     @Override
@@ -31,7 +33,7 @@ public class JavaFXLogin extends Application {
         fullBox.setFill(Color.valueOf("#172D13"));
         fullBox.setArcHeight(20);
         fullBox.setArcWidth(20);
-        fullBox.setLayoutX(335);  // Align header at top-left
+        fullBox.setLayoutX(335);
         fullBox.setLayoutY(160);
         root.getChildren().add(fullBox);
 
@@ -45,7 +47,7 @@ public class JavaFXLogin extends Application {
         // Create line rectangle below filter boxes
         Rectangle subline = new Rectangle(225, 1);
         subline.setFill(Color.valueOf("#C49A6A"));
-        subline.setLayoutX(395);  // Align header at top-left
+        subline.setLayoutX(395);
         subline.setLayoutY(215);
         root.getChildren().add(subline);
 
@@ -97,11 +99,15 @@ public class JavaFXLogin extends Application {
         // Set title and make stage resizable
         primaryStage.setTitle("Login");
         primaryStage.setScene(scene);
-        primaryStage.setResizable(true);  // Allow resizing
+        primaryStage.setResizable(true);
         primaryStage.show();
 
         btnBack.setOnAction(event -> openBasePage(primaryStage));
-        BtnSubmit.setOnAction(event -> openBasePage(primaryStage));
+        BtnSubmit.setOnAction(event -> {
+            String username = inputusername.getText();
+            String password = inputPassword.getText();
+            submitClicked(primaryStage, username, password, root);
+        });
     }
 
     //methods to swap pages
@@ -115,17 +121,41 @@ public class JavaFXLogin extends Application {
         }
     }
 
-    private void submitClicked(Stage primaryStage) {
-        //instantiate User object to be used for register() method
-        JavaFXApp basePage = new JavaFXApp();
-        try {
-            //will add the register() method so it binds
+    Label failLabel = new Label();
 
-            // then return to base page. 
-            basePage.start(primaryStage);
+    private void submitClicked(Stage primaryStage, String username, String password, Pane root) {
+
+        // Clear any existing failLabel from previous attempts
+        if (root.getChildren().contains(failLabel)) {
+            root.getChildren().remove(failLabel);
         }
-        catch (Exception e) {
-            e.printStackTrace();
+        //instantiate User object to be used for register() method
+        User user = new User(username, password);
+        if (user.login(password)) {
+            Label successLabel = new Label("Login Successful!");
+            successLabel.setTextFill(Color.GREEN);
+            successLabel.setLayoutX(455);
+            successLabel.setLayoutY(435);
+            root.getChildren().add(successLabel);
+            Label returnLabel = new Label("Returning to home page");
+            returnLabel.setTextFill(Color.GREEN);
+            returnLabel.setLayoutX(440);
+            returnLabel.setLayoutY(455);
+            root.getChildren().add(returnLabel);
+
+            //pause transition for 5 seconds before going to the base page
+            PauseTransition pause = new PauseTransition(Duration.seconds(5));
+            pause.setOnFinished(event -> {
+                root.getChildren().remove(successLabel); // Remove the success message
+                openBasePage(primaryStage); // Navigate to the base page
+            });
+            pause.play();
+        } else {
+            failLabel = new Label("Login failed. Please check username or password");
+            failLabel.setTextFill(Color.RED);
+            failLabel.setLayoutX(380);
+            failLabel.setLayoutY(435);
+            root.getChildren().add(failLabel);
         }
     }
 }

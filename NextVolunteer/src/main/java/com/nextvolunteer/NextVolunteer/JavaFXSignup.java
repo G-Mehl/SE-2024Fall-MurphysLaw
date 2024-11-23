@@ -8,11 +8,17 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle; // Imports all classes in javafx.stage
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Screen;
-import javafx.stage.Stage; // Imports all classes in javafx.scene
+import javafx.stage.Stage;
 
 public class JavaFXSignup extends Application {
+
+    private TextField inputEmail;
+    private TextField inputUsername;
+    private TextField inputPassword;
+    private TextField inputPasswordConfirm;
+
     @Override
     public void start(Stage primaryStage) {
         // Get the screen dimensions
@@ -31,7 +37,7 @@ public class JavaFXSignup extends Application {
         fullBox.setFill(Color.valueOf("#172D13"));
         fullBox.setArcHeight(20);
         fullBox.setArcWidth(20);
-        fullBox.setLayoutX(335);  // Align header at top-left
+        fullBox.setLayoutX(335);
         fullBox.setLayoutY(30);
         root.getChildren().add(fullBox);
 
@@ -45,7 +51,7 @@ public class JavaFXSignup extends Application {
         // Create line rectangle below filter boxes
         Rectangle subline = new Rectangle(225, 1);
         subline.setFill(Color.valueOf("#C49A6A"));
-        subline.setLayoutX(395);  // Align header at top-left
+        subline.setLayoutX(395);
         subline.setLayoutY(100);
         root.getChildren().add(subline);
 
@@ -63,7 +69,7 @@ public class JavaFXSignup extends Application {
         root.getChildren().add(lblemailErr);
 
         //input email
-        TextField inputEmail = new TextField();
+        inputEmail = new TextField();
         inputEmail.setPromptText("person@gmail.com");
         inputEmail.setLayoutX(395);
         inputEmail.setLayoutY(140);
@@ -77,7 +83,7 @@ public class JavaFXSignup extends Application {
         root.getChildren().add(lblusername);
 
         //username input
-        TextField inputUsername = new TextField();
+        inputUsername = new TextField();
         inputUsername.setPromptText("person123");
         inputUsername.setLayoutX(395);
         inputUsername.setLayoutY(220);
@@ -91,7 +97,7 @@ public class JavaFXSignup extends Application {
         root.getChildren().add(lblpassword);
         
         //password input
-        TextField inputPassword = new TextField();
+        inputPassword = new TextField();
         inputPassword.setPromptText("password!");
         inputPassword.setLayoutX(395);
         inputPassword.setLayoutY(300);
@@ -113,7 +119,7 @@ public class JavaFXSignup extends Application {
 
 
         //password input
-        TextField inputPasswordConfirm = new TextField();
+        inputPasswordConfirm = new TextField();
         inputPasswordConfirm.setPromptText("password!");
         inputPasswordConfirm.setLayoutX(395);
         inputPasswordConfirm.setLayoutY(380);
@@ -139,7 +145,7 @@ public class JavaFXSignup extends Application {
         // Set title and make stage resizable
         primaryStage.setTitle("Sign up");
         primaryStage.setScene(scene);
-        primaryStage.setResizable(true);  // Allow resizing
+        primaryStage.setResizable(true);
         primaryStage.show();
 
         btnBack.setOnAction(event -> openBasePage(primaryStage));
@@ -168,9 +174,9 @@ public class JavaFXSignup extends Application {
 
     //methods to swap pages
     private void openBasePage(Stage primaryStage) {
-        JavaFXApp basePage = new JavaFXApp();
+        JavaFXLogin loginPage = new JavaFXLogin();
         try {
-            basePage.start(primaryStage);
+            loginPage.start(primaryStage);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -178,16 +184,32 @@ public class JavaFXSignup extends Application {
     }
 
     private void submitClicked(Stage primaryStage) {
-        //instantiate User object to be used for register() method
-        JavaFXApp basePage = new JavaFXApp();
-        try {
-            //will add the register() method so it binds
+        String email = inputEmail.getText().trim();
+        String username = inputUsername.getText().trim(); 
+        String password = inputPassword.getText();
+        String confirmPassword = inputPasswordConfirm.getText();
 
-            // then return to base page. 
-            basePage.start(primaryStage);
+        // Validate inputs
+        if (email.isEmpty() || username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            System.out.println("All fields must be filled out.");
+            return;
         }
-        catch (Exception e) {
-            e.printStackTrace();
+
+        if (!password.equals(confirmPassword)) {
+            System.out.println("Passwords do not match.");
+            return;
+        }
+
+        // Instantiate User object
+        User newUser = new User(1, username, password, email, null, null);
+
+        // Call the register method
+        if (newUser.register()) {
+            System.out.println("User registered successfully!");
+            primaryStage.close(); // Close the signup window
+            openBasePage(primaryStage); // Navigate to the base page
+        } else {
+            System.out.println("User registration failed. Please check the console for details.");
         }
     }
 

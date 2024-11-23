@@ -86,3 +86,13 @@ BEGIN
 END //
 
 DELIMITER ;
+
+-- had to adjust due to unique constraint on associated_interests not allowing duplicates --
+ALTER TABLE opportunities DROP FOREIGN KEY opportunities_ibfk_1;
+ALTER TABLE opportunities DROP INDEX associated_interests;
+ALTER TABLE opportunities
+ADD CONSTRAINT opportunities_ibfk_1 FOREIGN KEY (associated_interests) REFERENCES interests (id);
+
+--made the users id autoincrementing
+ALTER TABLE users
+MODIFY COLUMN id INT NOT NULL AUTO_INCREMENT;

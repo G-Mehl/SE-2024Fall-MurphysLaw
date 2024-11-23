@@ -1,7 +1,14 @@
 package com.nextvolunteer.NextVolunteer;
 
-import java.util.*;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.mindrot.jbcrypt.BCrypt;
 
 public class User {
     // Variables
@@ -9,7 +16,6 @@ public class User {
     private String username;
     private String password;
     private String email;
-
     private String fullName;
     private List<String> savedInterests;
     private String location;
@@ -23,10 +29,16 @@ public class User {
         public User(int userID, String username, String password, String email, List<String> savedInterests, String location) {
             this.userID = userID;
             this.username = username;
-            this.password = password;
+            setPassword(password);
             this.email = email;
             this.savedInterests = savedInterests;
             this.location = location;
+        }
+
+        // Constructor for login
+        public User(String username, String password) {
+            this.username = username;
+            setPassword(password);
         }
 
         // Getters and Setters
@@ -51,7 +63,7 @@ public class User {
         }
 
         public void setPassword(String password) {
-            this.password = password;
+            this.password = BCrypt.hashpw(password, BCrypt.gensalt());
         }
 
         public String getEmail() {
@@ -87,14 +99,22 @@ public class User {
         }
 
         // Methods
-        public boolean login() {
+        public boolean checkPassword(String plainPassword, String hashedPassword) {
+            return BCrypt.checkpw(plainPassword, hashedPassword);
+        }
+
+        public boolean login(String enteredPassword) {
             try (Connection conn = DriverManager.getConnection(URL, DB_USERNAME, DB_PASSWORD)) {
-                String sql = "SELECT * FROM Users WHERE username = ? AND password = ?";
+                String sql = "SELECT pass FROM Users WHERE username = ?";
                 PreparedStatement stmt = conn.prepareStatement(sql);
                 stmt.setString(1, getUsername());
-                stmt.setString(2, getPassword());
                 ResultSet loginResult = stmt.executeQuery();
-                return loginResult.next();
+
+                if (loginResult.next()) {
+                    String hashedPassword = loginResult.getString("pass");
+                    return checkPassword(enteredPassword, hashedPassword);
+                }
+                return false;
             } catch (SQLException e) {
                 System.out.println("Login Failed!");
                 e.printStackTrace();
@@ -104,36 +124,36 @@ public class User {
 
         public boolean register() {
             try (Connection conn = DriverManager.getConnection(URL, DB_USERNAME, DB_PASSWORD)) {
+                // Check email
                 String checkEmailSQL = "SELECT * FROM Users WHERE email = ?";
-                PreparedStatement emailStmt = conn.prepareStatement(checkEmailSQL);
-                emailStmt.setString(1, getEmail());
-                ResultSet emailResult = emailStmt.executeQuery();
-
-                if (emailResult.next()) {
-                    System.out.println("Email already exists, please use another one");
-                    return false;
+                try (PreparedStatement emailStmt = conn.prepareStatement(checkEmailSQL)) {
+                    emailStmt.setString(1, getEmail());
+                    if (emailStmt.executeQuery().next()) {
+                        System.out.println("Email already exists, please use another one.");
+                        return false;
+                    }
                 }
-
-                // Check if username already exists
+            
+                // Check username
                 String checkUsernameSQL = "SELECT * FROM Users WHERE username = ?";
-                PreparedStatement usernameStmt = conn.prepareStatement(checkUsernameSQL);
-                usernameStmt.setString(1, getUsername());
-                ResultSet usernameResult = usernameStmt.executeQuery();
-
-                if (usernameResult.next()) {
-                    System.out.println("Username already exists, please enter a different one");
-                    return false;
+                try (PreparedStatement usernameStmt = conn.prepareStatement(checkUsernameSQL)) {
+                    usernameStmt.setString(1, getUsername());
+                    if (usernameStmt.executeQuery().next()) {
+                        System.out.println("Username already exists, please enter a different one.");
+                        return false;
+                    }
+                }
+            
+                // Insert new user
+                String sql = "INSERT INTO Users (username, pass, email, full_name) VALUES (?, ?, ?, ?)";
+                try (PreparedStatement insertStmt = conn.prepareStatement(sql)) {
+                    insertStmt.setString(1, getUsername());
+                    insertStmt.setString(2, this.password); // Using hashed password
+                    insertStmt.setString(3, getEmail());
+                    insertStmt.setString(4, getFullName());
+                    insertStmt.executeUpdate();
                 }
 
-                // Insert new user
-                String sql = "INSERT INTO Users (id, username, password, email, full_name) VALUES (?, ?, ?, ?, ?)";
-                PreparedStatement insertStmt = conn.prepareStatement(sql);
-                insertStmt.setInt(1, getUserID());
-                insertStmt.setString(2, getUsername());
-                insertStmt.setString(3, getPassword());
-                insertStmt.setString(4, getEmail());
-                insertStmt.setString(5, getFullName());
-                insertStmt.executeUpdate();
                 return true;
             } catch (SQLException e) {
                 System.out.println("Registration failed!");
@@ -142,17 +162,23 @@ public class User {
             }
         }
 
-        public void updateProfile() {
+        public void updateProfile(String newPassword) {
             try (Connection conn = DriverManager.getConnection(URL, DB_USERNAME, DB_PASSWORD)) {
-                String updateSql = "UPDATE Users SET username = ?, password = ?, email = ?, full_name = ?, interests = ? WHERE id = ?";
+                String updateSql = "UPDATE Users SET username = ?, pass = ?, email = ?, full_name = ?, interests = ? WHERE id = ?";
                 PreparedStatement updateStmt = conn.prepareStatement(updateSql);
                 updateStmt.setString(1, getUsername());
-                updateStmt.setString(2, getPassword());
+    
+                // Update password only if a new one is provided
+                if (newPassword != null && !newPassword.isEmpty()) {
+                    updateStmt.setString(2, BCrypt.hashpw(newPassword, BCrypt.gensalt())); // Hash new password
+                } else {
+                    updateStmt.setString(2, this.password); // Keep existing password
+                }
+            
                 updateStmt.setString(3, getEmail());
-                updateStmt.setString(4, getFullName());
-                updateStmt.setString(5, String.join(",", getSavedInterests()));
-                updateStmt.setInt(6, getUserID());
-
+                updateStmt.setString(4, String.join(",", getSavedInterests()));
+                updateStmt.setString(5, getUsername()); //update based on username
+            
                 updateStmt.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -179,8 +205,7 @@ public class User {
                             rs.getString("title"),
                             rs.getString("descr"),
                             rs.getString("location"),
-                            rs.getString("associated_interests"),
-                            rs.getInt("organization_id")
+                            rs.getString("associated_interests")
                     );
                     opportunity.setDuration(rs.getString("duration"));
                     recommendedOpportunities.add(opportunity);
@@ -190,6 +215,11 @@ public class User {
             }
 
             return recommendedOpportunities;
+        }
+
+        // Method to determine if the password needs to be updated
+        private boolean passwordNeedsUpdate() {
+            return true; // Placeholder
         }
 
     }

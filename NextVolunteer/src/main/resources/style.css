@@ -153,6 +153,14 @@
     -fx-layoutY: 39; /* Y position */
 }
 
+.search-button {
+    -fx-pref-width: 110; /* Preferred width */
+    -fx-pref-height: 35; /* Preferred height */
+    -fx-background-color: #D76F30; /* Background color */
+    -fx-background-radius: 50px; /* Rounded corners */
+    -fx-font-size: 14px;
+}
+
 .submit-button {
     -fx-pref-width: 225; /* Preferred width */
     -fx-pref-height: 33; /* Preferred height */
@@ -318,4 +326,44 @@
     -fx-pref-width: 47; /* Preferred width */
     -fx-pref-height: 40; /* Preferred height */
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 4, 0, 0, 0); /* Drop shadow effect */
+}
+
+/* Style for the ListView */
+.results-list-view {
+    -fx-background-color: transparent; /* Match the background color */
+    -fx-border-color: transparent; /* Border color */
+    -fx-border-width: 1; /* Border width */
+    -fx-padding: 10; /* Padding inside the ListView */
+}
+
+/* Style for individual items in the ListView */
+.results-list-view .list-cell {
+    -fx-background-color: transparent; /* Transparent background for list items */
+    -fx-text-fill: #C49A6A; /* Text color for items */
+    -fx-font-family: 'Inter'; /* Font family */
+    -fx-font-size: 20px; /* Font size */
+    -fx-padding: 10; /* Padding around item text */
+}
+
+/* Hover effect for items */
+.results-list-view .list-cell:hover {
+    -fx-background-color: #172D13; /* Background color on hover */
+}
+
+.event-title {
+    -fx-font-family: 'Inter';
+    -fx-font-size: 20px; /* Larger font for the title */
+    -fx-text-fill: #C49A6A; /* Title color */
+}
+
+.event-location {
+    -fx-font-family: 'Inter';
+    -fx-font-size: 16px; /* Slightly smaller font for the location */
+    -fx-text-fill: #C49A6A; /* Location color */
+}
+
+.event-description {
+    -fx-font-family: 'Inter';
+    -fx-font-size: 14px; /* Smaller font for the description */
+    -fx-text-fill: #C49A6A; /* A lighter color for the description */
 }

@@ -1,7 +1,12 @@
 package com.nextvolunteer.NextVolunteer;
 
-import java.util.*;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Organization {
     // Variables
@@ -57,7 +62,6 @@ public class Organization {
             stmt.setString(3, opportunity.getLocation());
             stmt.setString(4, opportunity.getDuration());
             stmt.setString(5, opportunity.getInterestArea());
-            stmt.setInt(6, opportunity.getOrganizationID());
 
             stmt.executeUpdate(); 
         } catch (SQLException e) {
@@ -99,8 +103,7 @@ public class Organization {
                         rs.getString("title"),
                         rs.getString("descr"),
                         rs.getString("location"),
-                        rs.getString("associated_interests"),
-                        rs.getInt("organization_id")
+                        rs.getString("associated_interests")
                 );
                 opportunity.setDuration(rs.getString("duration")); //Retrieving duration from DB
                 opportunities.add(opportunity);
